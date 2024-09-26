@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_19_114715) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -53,6 +53,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_114715) do
     t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bill_cards", force: :cascade do |t|
+    t.integer "card_id"
+    t.integer "bill_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bill_id"], name: "index_bill_cards_on_bill_id"
+    t.index ["card_id"], name: "index_bill_cards_on_card_id"
+  end
+
+  create_table "bill_parcels", force: :cascade do |t|
+    t.integer "bill_id"
+    t.integer "parcel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bill_id"], name: "index_bill_parcels_on_bill_id"
+    t.index ["parcel_id"], name: "index_bill_parcels_on_parcel_id"
   end
 
   create_table "bill_statuses", force: :cascade do |t|
@@ -109,6 +127,79 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_114715) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "complaints", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "bill_status_id"
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bill_status_id"], name: "index_complaints_on_bill_status_id"
+    t.index ["user_id"], name: "index_complaints_on_user_id"
+  end
+
+  create_table "dependent_cards", force: :cascade do |t|
+    t.integer "card_id"
+    t.string "number", null: false
+    t.string "cvv", null: false
+    t.decimal "credit_limit", precision: 12, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_dependent_cards_on_card_id"
+  end
+
+  create_table "dependents", force: :cascade do |t|
+    t.integer "card_id"
+    t.integer "user_id"
+    t.string "name", null: false
+    t.string "cpf", null: false
+    t.date "birth_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_dependents_on_card_id"
+    t.index ["user_id"], name: "index_dependents_on_user_id"
+  end
+
+  create_table "dispute_statuses", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "disputes", force: :cascade do |t|
+    t.integer "dispute_status_id"
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dispute_status_id"], name: "index_disputes_on_dispute_status_id"
+  end
+
+  create_table "financial_reports", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "bill_id"
+    t.decimal "total_spent", precision: 12, scale: 2, null: false
+    t.decimal "total_paid", precision: 12, scale: 2, null: false
+    t.string "category", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bill_id"], name: "index_financial_reports_on_bill_id"
+    t.index ["user_id"], name: "index_financial_reports_on_user_id"
+  end
+
+  create_table "fraud_statuses", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "frauds", force: :cascade do |t|
+    t.integer "fraud_status_id"
+    t.date "detected_at", null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fraud_status_id"], name: "index_frauds_on_fraud_status_id"
+  end
+
   create_table "parcels", force: :cascade do |t|
     t.integer "status_id", null: false
     t.integer "bill_id", null: false
@@ -119,6 +210,48 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_19_114715) do
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_parcels_on_bill_id"
     t.index ["status_id"], name: "index_parcels_on_status_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.integer "address_id"
+    t.string "name", null: false
+    t.string "cnpj"
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_suppliers_on_address_id"
+  end
+
+  create_table "transaction_statuses", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "supplier_id"
+    t.integer "transaction_status_id"
+    t.integer "fraud_id"
+    t.integer "dispute_id"
+    t.integer "bill_id"
+    t.decimal "value", precision: 12, scale: 2, null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bill_id"], name: "index_transactions_on_bill_id"
+    t.index ["dispute_id"], name: "index_transactions_on_dispute_id"
+    t.index ["fraud_id"], name: "index_transactions_on_fraud_id"
+    t.index ["supplier_id"], name: "index_transactions_on_supplier_id"
+    t.index ["transaction_status_id"], name: "index_transactions_on_transaction_status_id"
+  end
+
+  create_table "user_cards", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "card_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_user_cards_on_card_id"
+    t.index ["user_id"], name: "index_user_cards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -11,5 +11,5 @@ unless AdminUser.find_by(email: 'admin@example.com')
   AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
 end
 
-FactoryBot.create_list(:address, 100)
-
+FactoryBot.build_stubbed_list(:address, 100)
+FactoryBot.build_stubbed_list(:user, 100)
