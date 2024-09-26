@@ -10,6 +10,8 @@ gem 'sprockets-rails'
 
 gem 'sassc-rails'
 
+gem 'pg', '~> 1.1'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 
@@ -72,8 +74,8 @@ gem 'activeadmin', '~> 3.2'
 
 gem 'devise', '~> 4.9'
 
-gem "faker", "~> 3.4"
+gem 'faker', :require => false
 
-gem "factory_bot", "~> 6.5"
+gem 'factory_bot', '~> 6.5'
 
-gem "factory_bot_rails", "~> 6.4"
+gem 'factory_bot_rails', '~> 6.4'

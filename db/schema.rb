@@ -11,13 +11,16 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.string "author_type"
-    t.integer "author_id"
+    t.bigint "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
@@ -56,8 +59,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "bill_cards", force: :cascade do |t|
-    t.integer "card_id"
-    t.integer "bill_id"
+    t.bigint "card_id"
+    t.bigint "bill_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_cards_on_bill_id"
@@ -65,8 +68,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "bill_parcels", force: :cascade do |t|
-    t.integer "bill_id"
-    t.integer "parcel_id"
+    t.bigint "bill_id"
+    t.bigint "parcel_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bill_id"], name: "index_bill_parcels_on_bill_id"
@@ -80,7 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "bills", force: :cascade do |t|
-    t.integer "status_id"
+    t.bigint "status_id"
     t.decimal "total_amount", precision: 12, scale: 2, null: false
     t.decimal "paid_amount", precision: 12, scale: 2, null: false
     t.datetime "paid_at"
@@ -103,10 +106,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "cards", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "brand_id", null: false
-    t.integer "category_id", null: false
-    t.integer "card_status_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "brand_id", null: false
+    t.bigint "category_id", null: false
+    t.bigint "card_status_id", null: false
     t.string "number", null: false
     t.date "valid_at", null: false
     t.string "cvv", null: false
@@ -128,8 +131,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "complaints", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "bill_status_id"
+    t.bigint "user_id"
+    t.bigint "bill_status_id"
     t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -138,7 +141,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "dependent_cards", force: :cascade do |t|
-    t.integer "card_id"
+    t.bigint "card_id"
     t.string "number", null: false
     t.string "cvv", null: false
     t.decimal "credit_limit", precision: 12, scale: 2, null: false
@@ -148,8 +151,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "dependents", force: :cascade do |t|
-    t.integer "card_id"
-    t.integer "user_id"
+    t.bigint "card_id"
+    t.bigint "user_id"
     t.string "name", null: false
     t.string "cpf", null: false
     t.date "birth_date", null: false
@@ -166,7 +169,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "disputes", force: :cascade do |t|
-    t.integer "dispute_status_id"
+    t.bigint "dispute_status_id"
     t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -174,8 +177,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "financial_reports", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "bill_id"
+    t.bigint "user_id"
+    t.bigint "bill_id"
     t.decimal "total_spent", precision: 12, scale: 2, null: false
     t.decimal "total_paid", precision: 12, scale: 2, null: false
     t.string "category", null: false
@@ -192,7 +195,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "frauds", force: :cascade do |t|
-    t.integer "fraud_status_id"
+    t.bigint "fraud_status_id"
     t.date "detected_at", null: false
     t.string "description", null: false
     t.datetime "created_at", null: false
@@ -201,8 +204,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "parcels", force: :cascade do |t|
-    t.integer "status_id", null: false
-    t.integer "bill_id", null: false
+    t.bigint "status_id", null: false
+    t.bigint "bill_id", null: false
     t.decimal "amount", precision: 12, scale: 2, null: false
     t.date "due_at", null: false
     t.integer "number", null: false
@@ -213,7 +216,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "suppliers", force: :cascade do |t|
-    t.integer "address_id"
+    t.bigint "address_id"
     t.string "name", null: false
     t.string "cnpj"
     t.string "category"
@@ -229,11 +232,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.integer "supplier_id"
-    t.integer "transaction_status_id"
-    t.integer "fraud_id"
-    t.integer "dispute_id"
-    t.integer "bill_id"
+    t.bigint "supplier_id"
+    t.bigint "transaction_status_id"
+    t.bigint "fraud_id"
+    t.bigint "dispute_id"
+    t.bigint "bill_id"
     t.decimal "value", precision: 12, scale: 2, null: false
     t.string "description", null: false
     t.datetime "created_at", null: false
@@ -246,8 +249,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_26_111402) do
   end
 
   create_table "user_cards", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "card_id"
+    t.bigint "user_id"
+    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_user_cards_on_card_id"
