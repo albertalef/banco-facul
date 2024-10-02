@@ -51,14 +51,14 @@ threads = []
   threads << Thread.new do
     ActiveRecord::Base.connection_pool.with_connection do
       puts 'start user creation'
-      users = FactoryBot.build_stubbed_list(:address, 5_000).map(&:attributes)
+      users = FactoryBot.build_stubbed_list(:user, 5_000).map(&:attributes)
       puts 'created users'
       User.insert_all(users)
 
       puts 'start card creation'
-      FactoryBot.build_stubbed_list(:address, 10_000).map(&:attributes)
+      cards = FactoryBot.build_stubbed_list(:card, 10_000).map(&:attributes)
       puts 'created cards'
-      Address.insert_all(addresses)
+      Address.insert_all(cards)
 
       puts 'start address creation'
       addresses = FactoryBot.build_stubbed_list(:address, 10_000).map(&:attributes)
