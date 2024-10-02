@@ -97,7 +97,7 @@ end
 
 FactoryBot.define do
   factory :parcel do
-    bill_status { association :bill_status }
+    bill_status_id { bill_status_ids.sample }
     bill { association :bill }
     amount { rand(0.0..999_999_999.99) }
     due_at { Date.tomorrow }
