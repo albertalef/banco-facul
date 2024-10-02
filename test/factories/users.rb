@@ -40,7 +40,7 @@ FactoryBot.define do
     user { association :user }
     brand { association :brand }
     category { association :category }
-    card_status { CardStatus.pick }
+    card_status { association :card_status }
     number { Faker::Business.credit_card_number }
     valid_at { Faker::Business.credit_card_expiry_date }
     cvv { rand(100..999) }
@@ -62,7 +62,7 @@ FactoryBot.define do
       bill_status_ids { [''] }
     end
 
-    bill_status_id { bill_status_ids.sample }
+    bill_status { association :bill_status }
     total_amount { ramdom_total_amount }
     paid_amount { rand(0.0..ramdom_total_amount) }
     paid_at { Date.today }
